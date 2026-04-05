@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinician Journey — The Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* ── CARTWHEEL BRAND TOKENS ── */
+  :root {
+    --cw-bg:           #0F1B1F;
+    --cw-surface:      #172228;
+    --cw-surface-2:    #1C2F35;
+    --cw-surface-3:    #223540;
+    --cw-text:         #FFFFFF;
+    --cw-text-muted:   #9C9283;
+    --cw-text-dim:     #6B7A7E;
+    --cw-heading:      #B1A5F7;
+    --cw-border:       #243038;
+    --cw-border-light: #2E3E47;
+    --cw-indigo:       #394B99;
+    --cw-lavender:     #B1A5F7;
+    --cw-light-lav:    #D8D2FB;
+    --cw-forest:       #26544F;
+    --cw-mint:         #A7CF99;
+    --cw-light-mint:   #D3E7CC;
+    --cw-brick:        #5C1E37;
+    --cw-peach:        #EBA89B;
+    --cw-light-peach:  #F5D3CD;
+    --cw-taupe:        #9C9283;
+    --cw-sand:         #F0ECE9;
+    --cw-charcoal:     #0F1B1F;
+    --cw-font-display: 'Montserrat', sans-serif;
+    --cw-font-body:    'Inter', system-ui, -apple-system, sans-serif;
+    --cw-radius-sm:    4px;
+    --cw-radius-md:    8px;
+    --cw-radius-lg:    12px;
+    --cw-radius-pill:  9999px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--cw-font-body);
+    background: var(--cw-bg);
+    color: var(--cw-text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15, 27, 31, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--cw-border);
+    padding: 0 48px;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 52px;
+    max-width: 960px;
+  }
+
+  .nav-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cw-text-dim);
+    margin-right: 28px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nav-milestones {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-milestones::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px;
+    border-radius: var(--cw-radius-pill);
+    border: 1px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-family: var(--cw-font-body);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cw-text-dim);
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .nav-btn:hover { background: var(--cw-surface-2); color: var(--cw-text); }
+  .nav-btn.active { background: var(--cw-surface-2); border-color: var(--cw-border-light); color: var(--cw-text); }
+
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .nav-divider { width: 16px; height: 1px; background: var(--cw-border); flex-shrink: 0; }
+
+  /* Filter controls */
+  .nav-filters {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    padding-left: 16px;
+    border-left: 1px solid var(--cw-border);
+    flex-shrink: 0;
+  }
+
+  .filter-btn {
+    padding: 4px 10px;
+    border-radius: var(--cw-radius-pill);
+    border: 1px solid var(--cw-border);
+    background: none;
+    cursor: pointer;
+    font-family: var(--cw-font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--cw-text-dim);
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--cw-border-light); color: var(--cw-text); }
+  .filter-btn.active { background: var(--cw-surface-2); border-color: var(--cw-border-light); color: var(--cw-text); }
+  .filter-btn.f-critical.active { border-color: var(--cw-brick); color: var(--cw-peach); background: rgba(92,30,55,0.15); }
+  .filter-btn.f-warning.active { border-color: #5C4A1E; color: #F0C87E; background: rgba(92,74,30,0.15); }
+
+  /* ── MAIN CONTENT ── */
+  .main-content { padding: 52px 48px; max-width: 960px; }
+
+  /* ── HEADER ── */
+  .header { margin-bottom: 40px; }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cw-mint);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: var(--cw-font-display);
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--cw-text);
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--cw-text-muted);
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* ── SENTIMENT CURVE ── */
+  .sentiment-section {
+    margin-bottom: 48px;
+    background: var(--cw-surface-2);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-lg);
+    padding: 24px 28px;
+  }
+
+  .sent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .sent-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cw-text-dim);
+  }
+
+  .sent-legend {
+    display: flex;
+    gap: 16px;
+  }
+
+  .sent-leg-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--cw-text-dim);
+    font-weight: 600;
+  }
+
+  .sent-leg-line {
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+  }
+
+  .chart-wrap {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .chart-wrap svg { width: 100%; display: block; }
+
+  .chart-tooltip {
+    position: absolute;
+    background: var(--cw-surface);
+    border: 1px solid var(--cw-border-light);
+    border-radius: var(--cw-radius-md);
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--cw-text);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+    z-index: 10;
+    transform: translateX(-50%);
+  }
+
+  .chart-tooltip.visible { opacity: 1; }
+
+  /* ── JOURNEY RAIL ── */
+  .journey { display: flex; flex-direction: column; }
+
+  /* ── MILESTONE BLOCK ── */
+  .milestone-block {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    position: relative;
+    scroll-margin-top: 70px;
+  }
+
+  .rail-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3px;
+  }
+
+  .milestone-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 3px solid var(--cw-bg);
+    flex-shrink: 0;
+    z-index: 2;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .milestone-dot:hover { transform: scale(1.25); box-shadow: 0 0 0 4px rgba(255,255,255,0.08); }
+  .milestone-dot.active { transform: scale(1.2); box-shadow: 0 0 0 3px rgba(255,255,255,0.12); }
+
+  .rail-line {
+    width: 2px;
+    flex: 1;
+    background: var(--cw-border);
+    margin-top: 3px;
+    transition: background 0.3s;
+  }
+
+  .rail-line.completed { background: var(--cw-forest); }
+
+  /* ── MILESTONE CONTENT ── */
+  .milestone-content { padding: 0 0 44px 14px; }
+
+  /* ── MILESTONE HEADER (clickable) ── */
+  .milestone-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .m-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cw-text-dim);
+    padding-top: 4px;
+    min-width: 26px;
+  }
+
+  .m-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .m-title {
+    font-family: var(--cw-font-display);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--cw-text);
+    line-height: 1.2;
+  }
+
+  .m-time {
+    font-size: 12px;
+    color: var(--cw-text-dim);
+    margin-top: 4px;
+  }
+
+  .m-toggle {
+    margin-left: auto;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--cw-surface-3);
+    border: 1px solid var(--cw-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--cw-text-dim);
+    transition: all 0.2s;
+  }
+  .milestone-header:hover .m-toggle { border-color: var(--cw-border-light); color: var(--cw-text); }
+  .m-toggle.collapsed { transform: rotate(-90deg); }
+
+  /* ── COLLAPSIBLE BODY ── */
+  .milestone-body {
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    max-height: 2000px;
+    opacity: 1;
+  }
+  .milestone-body.collapsed {
+    max-height: 0;
+    opacity: 0;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+    background: var(--cw-surface);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-pill);
+    padding: 3px;
+    width: fit-content;
+    margin-left: 40px;
+  }
+
+  .tab-btn {
+    padding: 5px 14px;
+    border-radius: var(--cw-radius-pill);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: var(--cw-font-body);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cw-text-dim);
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .tab-btn:hover { color: var(--cw-text); }
+  .tab-btn.active { background: var(--cw-surface-3); color: var(--cw-text); }
+
+  /* ── TAB PANELS ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── TWO-COLUMN CARDS ── */
+  .what-row {
+    display: flex;
+    gap: 12px;
+    margin-left: 40px;
+    margin-bottom: 14px;
+  }
+
+  .what-card {
+    flex: 1;
+    background: var(--cw-surface-2);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-md);
+    padding: 16px 18px;
+  }
+
+  .wc-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cw-text-dim);
+    margin-bottom: 10px;
+  }
+
+  .wc-items { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+
+  .wc-items li {
+    font-size: 12px;
+    color: #C8D0D8;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .wc-items li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--cw-text-dim);
+    font-size: 10px;
+    top: 1px;
+  }
+
+  /* ── PAIN POINTS ── */
+  .pain-list {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pain-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #1A1018;
+    border: 1px solid #3A1828;
+    border-left: 3px solid var(--cw-brick);
+    border-radius: var(--cw-radius-md);
+    padding: 12px 14px;
+    transition: all 0.2s;
+  }
+
+  .pain-item:hover {
+    background: #1F1220;
+    border-left-color: var(--cw-peach);
+  }
+
+  .pain-item.severity-warning {
+    background: #1A160E;
+    border-color: #3A2E18;
+    border-left-color: #8C6D2A;
+  }
+
+  .pain-item.severity-warning:hover { border-left-color: #F0C87E; }
+
+  .pain-item.hidden-filter { display: none; }
+
+  .pain-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+  .pain-text { font-size: 12px; color: var(--cw-peach); line-height: 1.65; }
+
+  .pain-text.warning-text { color: #E8C07A; }
+
+  .pain-text strong {
+    color: var(--cw-light-peach);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 12px;
+  }
+
+  .pain-text.warning-text strong { color: #F5DBA0; }
+
+  /* ── SEVERITY BADGE ── */
+  .severity-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border-radius: var(--cw-radius-pill);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    width: fit-content;
+  }
+
+  .badge-critical { background: rgba(92,30,55,0.3); color: var(--cw-peach); border: 1px solid rgba(92,30,55,0.5); }
+  .badge-warning { background: rgba(92,74,30,0.3); color: #F0C87E; border: 1px solid rgba(92,74,30,0.5); }
+
+  /* ── SYSTEM TAGS ── */
+  .system-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-left: 40px;
+    margin-top: 6px;
+  }
+
+  .sys-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--cw-surface);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-pill);
+    padding: 4px 11px;
+    font-size: 11px;
+    color: var(--cw-taupe);
+    font-weight: 600;
+    cursor: default;
+    transition: all 0.15s;
+  }
+
+  .sys-tag:hover { border-color: var(--cw-border-light); color: var(--cw-text-muted); }
+
+  /* ── EXPERIENCE CARD ── */
+  .exp-card {
+    background: var(--cw-surface-2);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-md);
+    padding: 18px 20px;
+    margin-left: 40px;
+    margin-bottom: 14px;
+  }
+  .exp-card .exp-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cw-text-dim);
+    margin-bottom: 8px;
+  }
+  .exp-card p { font-size: 13px; color: #C8D0D8; line-height: 1.7; }
+
+  /* ── NORTH STAR CARD ── */
+  .north-star {
+    background: #0D1E1C;
+    border: 1px solid #1A3830;
+    border-left: 3px solid var(--cw-mint);
+    border-radius: var(--cw-radius-md);
+    padding: 18px 20px;
+    margin-left: 40px;
+    margin-bottom: 14px;
+  }
+  .north-star .ns-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cw-mint);
+    margin-bottom: 10px;
+  }
+  .north-star .ns-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .north-star .ns-number {
+    font-family: var(--cw-font-display);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--cw-mint);
+    line-height: 1;
+  }
+  .north-star .ns-sub {
+    font-size: 13px;
+    color: var(--cw-light-mint);
+    line-height: 1.4;
+  }
+  .north-star p { font-size: 12px; color: var(--cw-text-muted); line-height: 1.65; }
+
+  /* ── MILESTONE DOT COLORS ── */
+  .dot-indigo  { background: var(--cw-indigo); }
+  .dot-lav     { background: var(--cw-lavender); }
+  .dot-peach   { background: var(--cw-peach); }
+  .dot-mint    { background: var(--cw-mint); }
+  .dot-forest  { background: var(--cw-forest); }
+
+  .label-indigo { color: var(--cw-lavender); }
+  .label-lav    { color: var(--cw-lavender); }
+  .label-peach  { color: var(--cw-peach); }
+  .label-mint   { color: var(--cw-mint); }
+  .label-forest { color: var(--cw-mint); }
+
+  .gap { height: 8px; }
+
+  /* ── PROGRESS INDICATOR ── */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cw-mint), var(--cw-lavender));
+    z-index: 200;
+    transition: width 0.1s;
+  }
+
+  /* ── BOTTOM SUMMARY ── */
+  .summary {
+    margin-top: 52px;
+    max-width: 860px;
+    border-top: 1px solid var(--cw-border);
+    padding-top: 32px;
+  }
+  .summary-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cw-text-dim);
+    margin-bottom: 20px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .summary-card {
+    background: var(--cw-surface-2);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-md);
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .summary-card:hover { border-color: var(--cw-border-light); }
+  .summary-card .sc-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .summary-card p { font-size: 12px; color: var(--cw-text-muted); line-height: 1.7; }
+
+  /* ── PAIN COUNTER ── */
+  .pain-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: var(--cw-radius-pill);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .counter-critical { background: rgba(92,30,55,0.25); color: var(--cw-peach); }
+  .counter-warning { background: rgba(92,74,30,0.25); color: #F0C87E; }
+
+  /* ── FADE IN ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .milestone-block {
+    animation: fadeUp 0.4s ease both;
+  }
+  .milestone-block:nth-child(1) { animation-delay: 0.05s; }
+  .milestone-block:nth-child(2) { animation-delay: 0.12s; }
+  .milestone-block:nth-child(3) { animation-delay: 0.19s; }
+  .milestone-block:nth-child(4) { animation-delay: 0.26s; }
+  .milestone-block:nth-child(5) { animation-delay: 0.33s; }
+
+  /* ── ZERO STATE ── */
+  .no-pain-msg {
+    display: none;
+    margin-left: 40px;
+    padding: 16px 18px;
+    background: var(--cw-surface-2);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-md);
+    font-size: 12px;
+    color: var(--cw-text-dim);
+    font-style: italic;
+  }
+  .no-pain-msg.visible { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .main-content { padding: 36px 20px; }
+    .sticky-nav { padding: 0 20px; }
+    .what-row { flex-direction: column; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .tabs { margin-left: 0; }
+    .pain-list, .system-row, .what-row, .exp-card, .north-star { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <span class="nav-title">Layer 2</span>
+    <div class="nav-milestones" id="navMilestones">
+      <a href="#m1" class="nav-btn active" data-target="m1">
+        <span class="nav-dot" style="background:var(--cw-indigo)"></span>M1 · Signed Offer
+      </a>
+      <div class="nav-divider"></div>
+      <a href="#m2" class="nav-btn" data-target="m2">
+        <span class="nav-dot" style="background:var(--cw-lavender)"></span>M2 · Credentialing
+      </a>
+      <div class="nav-divider"></div>
+      <a href="#m3" class="nav-btn" data-target="m3">
+        <span class="nav-dot" style="background:var(--cw-peach)"></span>M3 · Decision Gate
+      </a>
+      <div class="nav-divider"></div>
+      <a href="#m4" class="nav-btn" data-target="m4">
+        <span class="nav-dot" style="background:var(--cw-mint)"></span>M4 · Onboarding
+      </a>
+      <div class="nav-divider"></div>
+      <a href="#m5" class="nav-btn" data-target="m5">
+        <span class="nav-dot" style="background:var(--cw-forest)"></span>M5 · First Session
+      </a>
+    </div>
+    <div class="nav-filters">
+      <button class="filter-btn active" id="filterAll" onclick="setFilter('all')">All</button>
+      <button class="filter-btn f-critical" id="filterCritical" onclick="setFilter('critical')">🔴 Critical</button>
+      <button class="filter-btn f-warning" id="filterWarning" onclick="setFilter('warning')">⚠️ Warning</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="main-content">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="eyebrow">Clinical Workforce Reliability · Layer 2</div>
+    <h1>Clinician Journey<br>The Experience</h1>
+    <p class="subtitle">What it feels like to move from signed offer to first session. Pain points drawn from Maps 1–3. Numbers deliberately kept separate from the funnel — this is the story behind them.</p>
+  </div>
+
+  <!-- ── SENTIMENT CURVE ── -->
+  <div class="sentiment-section">
+    <div class="sent-header">
+      <span class="sent-title">Clinician Experience Quality Across Journey</span>
+      <div class="sent-legend">
+        <div class="sent-leg-item">
+          <div class="sent-leg-line" style="background:var(--cw-lavender)"></div>
+          Clinician sentiment
+        </div>
+        <div class="sent-leg-item">
+          <div class="sent-leg-line" style="background:var(--cw-peach); height:2px; border-top: 2px dashed var(--cw-peach); background: none;"></div>
+          Pain intensity
+        </div>
+      </div>
+    </div>
+    <div class="chart-wrap" id="chartWrap">
+      <svg id="sentimentChart" viewBox="0 0 800 160" preserveAspectRatio="xMidYMid meet">
+        <!-- Grid lines -->
+        <line x1="80" y1="20" x2="780" y2="20" stroke="#243038" stroke-width="1"/>
+        <line x1="80" y1="60" x2="780" y2="60" stroke="#243038" stroke-width="1"/>
+        <line x1="80" y1="100" x2="780" y2="100" stroke="#243038" stroke-width="1"/>
+        <line x1="80" y1="140" x2="780" y2="140" stroke="#243038" stroke-width="1"/>
+
+        <!-- Y-axis labels -->
+        <text x="72" y="24" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#6B7A7E">High</text>
+        <text x="72" y="104" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#6B7A7E">Mid</text>
+        <text x="72" y="144" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#6B7A7E">Low</text>
+
+        <!-- Milestone vertical guides -->
+        <line x1="150" y1="20" x2="150" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="320" y1="20" x2="320" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="450" y1="20" x2="450" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="600" y1="20" x2="600" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="730" y1="20" x2="730" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
+
+        <!-- Milestone labels -->
+        <text x="150" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6B7A7E" font-weight="600">M1</text>
+        <text x="320" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6B7A7E" font-weight="600">M2</text>
+        <text x="450" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6B7A7E" font-weight="600">M3</text>
+        <text x="600" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6B7A7E" font-weight="600">M4</text>
+        <text x="730" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6B7A7E" font-weight="600">M5</text>
+
+        <!-- Sentiment fill area -->
+        <defs>
+          <linearGradient id="sentGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#B1A5F7" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#B1A5F7" stop-opacity="0.0"/>
+          </linearGradient>
+          <linearGradient id="painGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#EBA89B" stop-opacity="0.14"/>
+            <stop offset="100%" stop-color="#EBA89B" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Sentiment area fill -->
+        <path d="M150,45 C210,45 260,95 320,110 C380,125 410,130 450,122 C510,115 550,100 600,108 C650,115 680,32 730,28 L730,140 L150,140 Z"
+              fill="url(#sentGrad)"/>
+
+        <!-- Pain area fill -->
+        <path d="M150,95 C200,90 260,50 320,38 C380,26 410,28 450,32 C510,36 555,85 600,88 C650,90 685,110 730,115 L730,140 L150,140 Z"
+              fill="url(#painGrad)"/>
+
+        <!-- Sentiment line -->
+        <path id="sentimentLine"
+              d="M150,45 C210,45 260,95 320,110 C380,125 410,130 450,122 C510,115 550,100 600,108 C650,115 680,32 730,28"
+              fill="none" stroke="#B1A5F7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Pain dashed line -->
+        <path id="painLine"
+              d="M150,95 C200,90 260,50 320,38 C380,26 410,28 450,32 C510,36 555,85 600,88 C650,90 685,110 730,115"
+              fill="none" stroke="#EBA89B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5,4"/>
+
+        <!-- Interactive points on sentiment line -->
+        <circle class="chart-point" cx="150" cy="45" r="5" fill="#394B99" stroke="#B1A5F7" stroke-width="2" data-m="m1" data-label="M1 · Signed Offer" data-sent="High hope — then immediate confusion" style="cursor:pointer"/>
+        <circle class="chart-point" cx="320" cy="110" r="5" fill="#1C2F35" stroke="#B1A5F7" stroke-width="2" data-m="m2" data-label="M2 · Credentialing" data-sent="Anxiety — navigating alone with no visibility" style="cursor:pointer"/>
+        <circle class="chart-point" cx="450" cy="122" r="5" fill="#EBA89B" stroke="#B1A5F7" stroke-width="2" data-m="m3" data-label="M3 · Decision Gate" data-sent="High stress — start date uncertainty" style="cursor:pointer"/>
+        <circle class="chart-point" cx="600" cy="108" r="5" fill="#A7CF99" stroke="#B1A5F7" stroke-width="2" data-m="m4" data-label="M4 · Onboarding" data-sent="Cautious optimism — but no reminders or visibility" style="cursor:pointer"/>
+        <circle class="chart-point" cx="730" cy="28" r="5" fill="#26544F" stroke="#B1A5F7" stroke-width="2" data-m="m5" data-label="M5 · First Session" data-sent="Relief and engagement — retention nearly certain" style="cursor:pointer"/>
+      </svg>
+      <div class="chart-tooltip" id="chartTooltip"></div>
+    </div>
+  </div>
+
+  <!-- ── JOURNEY RAIL ── -->
+  <div class="journey" id="journeyRail">
+
+    <!-- ── M1: SIGNED OFFER ── -->
+    <div class="milestone-block" id="m1">
+      <div class="rail-col">
+        <div class="milestone-dot dot-indigo" onclick="scrollToMilestone('m1')"></div>
+        <div class="rail-line" id="rail1"></div>
+      </div>
+      <div class="milestone-content">
+        <div class="milestone-header" onclick="toggleMilestone('m1')">
+          <span class="m-num">M1</span>
+          <div>
+            <div class="m-label label-indigo">Entry Point</div>
+            <div class="m-title">Signed Offer
+              <span class="pain-counter counter-critical" title="Critical pain points">🔴 2</span>
+            </div>
+            <div class="m-time">Day 0 · Recruiter interaction complete</div>
+          </div>
+          <div class="m-toggle" id="toggle-m1">▾</div>
+        </div>
+
+        <div class="milestone-body" id="body-m1">
+          <!-- Tabs -->
+          <div class="tabs" id="tabs-m1">
+            <button class="tab-btn active" onclick="switchTab('m1','experience')">Experience</button>
+            <button class="tab-btn" onclick="switchTab('m1','pain')">Pain Points</button>
+            <button class="tab-btn" onclick="switchTab('m1','systems')">Systems</button>
+          </div>
+
+          <!-- Experience tab -->
+          <div class="tab-panel active" id="m1-experience">
+            <div class="what-row">
+              <div class="what-card">
+                <div class="wc-label">What the clinician experiences</div>
+                <ul class="wc-items">
+                  <li>Signs offer letter with preliminary start date</li>
+                  <li>Receives a generic post-offer email</li>
+                  <li>Has no clear picture of what happens next or in what order</li>
+                  <li>Credentialing timeline ("four weeks") is frequently misstated in recruiter scripts</li>
+                </ul>
+              </div>
+              <div class="what-card">
+                <div class="wc-label">What Cartwheel does</div>
+                <ul class="wc-items">
+                  <li>TA sends GEM engagement email — manually initiated per hire</li>
+                  <li>No automated sequencing fires at offer acceptance</li>
+                  <li>Recruiter screen errors already embedded: pay cadence, schedule notice, session count</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pain Points tab -->
+          <div class="tab-panel" id="m1-pain">
+            <div class="pain-list">
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">⚠️</span>
+                <div class="pain-text">
+                  <strong>Trust failure at the highest-trust moment</strong>
+                  Recruiter scripts contain confirmed errors — pay frequency, doc deadline, schedule notice, no-show policy, session count. The clinician forms expectations based on inaccurate information before credentialing even starts.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">⚠️</span>
+                <div class="pain-text">
+                  <strong>No automated engagement at offer acceptance</strong>
+                  TA must manually initiate GEM engagement per hire. There is no system-level trigger. The window between offer and credentialing survey opens with silence.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+            </div>
+            <div class="no-pain-msg" id="nopain-m1-pain">No pain points match the current filter.</div>
+          </div>
+
+          <!-- Systems tab -->
+          <div class="tab-panel" id="m1-systems">
+            <div class="system-row">
+              <span class="sys-tag">📧 GEM (manual)</span>
+              <span class="sys-tag">📋 Cognito / Verifiable</span>
+              <span class="sys-tag">🔗 Recruiter script</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── M2: CREDENTIALING WINDOW ── -->
+    <div class="milestone-block" id="m2">
+      <div class="rail-col">
+        <div class="milestone-dot dot-lav" onclick="scrollToMilestone('m2')"></div>
+        <div class="rail-line" id="rail2"></div>
+      </div>
+      <div class="milestone-content">
+        <div class="milestone-header" onclick="toggleMilestone('m2')">
+          <span class="m-num">M2</span>
+          <div>
+            <div class="m-label label-lav">Pre-Onboarding Window</div>
+            <div class="m-title">Credentialing Survey → Background Check
+              <span class="pain-counter counter-critical" title="Critical pain points">🔴 2</span>
+              <span class="pain-counter counter-warning" title="Warning pain points">⚠️ 1</span>
+            </div>
+            <div class="m-time">~5 days to survey · then 2–4 weeks before start date</div>
+          </div>
+          <div class="m-toggle" id="toggle-m2">▾</div>
+        </div>
+
+        <div class="milestone-body" id="body-m2">
+          <div class="tabs" id="tabs-m2">
+            <button class="tab-btn active" onclick="switchTab('m2','experience')">Experience</button>
+            <button class="tab-btn" onclick="switchTab('m2','pain')">Pain Points</button>
+            <button class="tab-btn" onclick="switchTab('m2','systems')">Systems</button>
+          </div>
+
+          <div class="tab-panel active" id="m2-experience">
+            <div class="what-row">
+              <div class="what-card">
+                <div class="wc-label">What the clinician experiences</div>
+                <ul class="wc-items">
+                  <li>Receives credentialing survey — no context on what comes next</li>
+                  <li>Independently discovers what state-specific compliance items apply to them</li>
+                  <li>Works through required documents with no progress visibility</li>
+                  <li>Has no way to confirm their start date is still on track</li>
+                  <li>Some items must be done BEFORE start, others DURING window — clinician has to self-sort</li>
+                </ul>
+              </div>
+              <div class="what-card">
+                <div class="wc-label">What Cartwheel does</div>
+                <ul class="wc-items">
+                  <li>State compliance requirements listed on a generic Google Site</li>
+                  <li>No system reminders for incomplete items</li>
+                  <li>Internal teams follow up manually if survey not received</li>
+                  <li>Background check (Checkr) runs in parallel — not yet in analysis</li>
+                  <li>Blocker diagnosis happens after the deadline, not before</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="m2-pain">
+            <div class="pain-list">
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>Clinician must self-identify what applies to them</strong>
+                  State requirements vary significantly — NY fingerprinting, AZ CALOCUS, MA CANS. The clinician navigates a generic Google Site with no routing logic to figure out what they need.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>No system reminders for incomplete items</strong>
+                  Follow-up is manual. Blockers are caught after the deadline, not before. A proactive nudge at day 12 — before the window closes — does not yet exist.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+              <div class="pain-item severity-warning" data-severity="warning">
+                <span class="pain-icon">⚠️</span>
+                <div class="pain-text warning-text">
+                  <strong>No visibility into their own status</strong>
+                  The clinician has no way to see where they are in the process or whether their start date is at risk. The only signal is silence — until a human reaches out.
+                  <div class="severity-badge badge-warning">⚠️ Warning</div>
+                </div>
+              </div>
+            </div>
+            <div class="no-pain-msg" id="nopain-m2-pain">No pain points match the current filter.</div>
+          </div>
+
+          <div class="tab-panel" id="m2-systems">
+            <div class="system-row">
+              <span class="sys-tag">📋 Cognito Forms</span>
+              <span class="sys-tag">✅ Verifiable</span>
+              <span class="sys-tag">🔍 Checkr</span>
+              <span class="sys-tag">🌐 Generic Google Site</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── M3: DECISION GATE ── -->
+    <div class="milestone-block" id="m3">
+      <div class="rail-col">
+        <div class="milestone-dot dot-peach" onclick="scrollToMilestone('m3')"></div>
+        <div class="rail-line" id="rail3"></div>
+      </div>
+      <div class="milestone-content">
+        <div class="milestone-header" onclick="toggleMilestone('m3')">
+          <span class="m-num">M3</span>
+          <div>
+            <div class="m-label label-peach">Gate · Decision Point</div>
+            <div class="m-title">Are Pre-Onboarding Steps Complete?
+              <span class="pain-counter counter-critical" title="Critical pain points">🔴 1</span>
+              <span class="pain-counter counter-warning" title="Warning pain points">⚠️ 1</span>
+            </div>
+            <div class="m-time">Day before start date · IT access + orientation readiness check</div>
+          </div>
+          <div class="m-toggle" id="toggle-m3">▾</div>
+        </div>
+
+        <div class="milestone-body" id="body-m3">
+          <div class="tabs" id="tabs-m3">
+            <button class="tab-btn active" onclick="switchTab('m3','experience')">Experience</button>
+            <button class="tab-btn" onclick="switchTab('m3','pain')">Pain Points</button>
+            <button class="tab-btn" onclick="switchTab('m3','systems')">Systems</button>
+          </div>
+
+          <div class="tab-panel active" id="m3-experience">
+            <div class="what-row">
+              <div class="what-card">
+                <div class="wc-label">Path A — Steps complete</div>
+                <ul class="wc-items">
+                  <li>Receives IT credentials — often late, day before start</li>
+                  <li>Limited buffer to resolve access issues before day one</li>
+                  <li>Attends New Employee Orientation (People Ops + Clinical + IT)</li>
+                  <li>Auto-enrolled in Rippling trainings — no action required</li>
+                </ul>
+              </div>
+              <div class="what-card">
+                <div class="wc-label">Path B — Steps incomplete</div>
+                <ul class="wc-items">
+                  <li>Start date pushed — TA notifies clinician manually</li>
+                  <li>Late notice is disruptive: childcare, transport, life logistics already arranged</li>
+                  <li>No proactive warning system flags risk before this moment</li>
+                  <li>Some of these clinicians never restart — a second ghost pool</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="exp-card">
+              <div class="exp-label">What the data shows at this gate</div>
+              <p>Half the clinicians who showed up on their start date never reached Cleared for Assignment. They completed interviews, signed an offer, submitted credentials, and still never saw a patient. This is the credentialing window failure — not a sourcing problem.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="m3-pain">
+            <div class="pain-list">
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>Date changes are reactive, not proactive</strong>
+                  TA manually notifies clinicians of start date changes. No early warning system exists to flag at-risk clinicians before the deadline. By the time a push happens, the clinician has already planned around the original date.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+              <div class="pain-item severity-warning" data-severity="warning">
+                <span class="pain-icon">⚠️</span>
+                <div class="pain-text warning-text">
+                  <strong>IT credentials arrive too late to resolve issues</strong>
+                  Access delivery often happens the day before start, leaving no buffer. Day-one access problems undermine the first impression at the worst possible moment.
+                  <div class="severity-badge badge-warning">⚠️ Warning</div>
+                </div>
+              </div>
+            </div>
+            <div class="no-pain-msg" id="nopain-m3-pain">No pain points match the current filter.</div>
+          </div>
+
+          <div class="tab-panel" id="m3-systems">
+            <div class="system-row">
+              <span class="sys-tag">💻 IT (credentials)</span>
+              <span class="sys-tag">🏢 Rippling (auto-enrollment)</span>
+              <span class="sys-tag">📅 TA manual notification</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── M4: ONBOARDING WINDOW ── -->
+    <div class="milestone-block" id="m4">
+      <div class="rail-col">
+        <div class="milestone-dot dot-mint" onclick="scrollToMilestone('m4')"></div>
+        <div class="rail-line" id="rail4"></div>
+      </div>
+      <div class="milestone-content">
+        <div class="milestone-header" onclick="toggleMilestone('m4')">
+          <span class="m-num">M4</span>
+          <div>
+            <div class="m-label label-mint">3-Week Window</div>
+            <div class="m-title">Onboarding Trainings + Compliance Completion
+              <span class="pain-counter counter-critical" title="Critical pain points">🔴 1</span>
+              <span class="pain-counter counter-warning" title="Warning pain points">⚠️ 1</span>
+            </div>
+            <div class="m-time">From start date · Cleared for Assignment is the exit gate</div>
+          </div>
+          <div class="m-toggle" id="toggle-m4">▾</div>
+        </div>
+
+        <div class="milestone-body" id="body-m4">
+          <div class="tabs" id="tabs-m4">
+            <button class="tab-btn active" onclick="switchTab('m4','experience')">Experience</button>
+            <button class="tab-btn" onclick="switchTab('m4','pain')">Pain Points</button>
+            <button class="tab-btn" onclick="switchTab('m4','systems')">Systems</button>
+          </div>
+
+          <div class="tab-panel active" id="m4-experience">
+            <div class="what-row">
+              <div class="what-card">
+                <div class="wc-label">What the clinician experiences</div>
+                <ul class="wc-items">
+                  <li>Works through onboarding trainings + compliance within a 3-week window</li>
+                  <li>Tracks own deadlines — no automated reminders</li>
+                  <li>Incomplete items generate manual internal follow-up only after flagged</li>
+                  <li>No progressive visibility into what's left or how close they are</li>
+                </ul>
+              </div>
+              <div class="what-card">
+                <div class="wc-label">What Cartwheel does</div>
+                <ul class="wc-items">
+                  <li>Training → portal → case assignment handoff has no documented owner</li>
+                  <li>January 2026 gap: clinician hired but had no cases for weeks due to portal oversight</li>
+                  <li>"Cleared but never activated" cohort likely exists — not yet sized</li>
+                  <li>FreshService baseline incomplete — Esther audit ticket open</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="m4-pain">
+            <div class="pain-list">
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>No one owns the training → portal → case assignment handoff</strong>
+                  This is the root cause of the January 2026 gap. A clinician completed onboarding and was never activated into the case system — no one caught it because no one owns the transition.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+              <div class="pain-item severity-warning" data-severity="warning">
+                <span class="pain-icon">⚠️</span>
+                <div class="pain-text warning-text">
+                  <strong>No automated deadline reminders during the window</strong>
+                  Clinicians who fall behind have no system signal telling them they're at risk. Follow-up is manual and reactive. The 3-week window closes quietly.
+                  <div class="severity-badge badge-warning">⚠️ Warning</div>
+                </div>
+              </div>
+            </div>
+            <div class="no-pain-msg" id="nopain-m4-pain">No pain points match the current filter.</div>
+          </div>
+
+          <div class="tab-panel" id="m4-systems">
+            <div class="system-row">
+              <span class="sys-tag">🏢 Rippling (trainings)</span>
+              <span class="sys-tag">📋 Compliance docs</span>
+              <span class="sys-tag">🟢 Healthie (availability)</span>
+              <span class="sys-tag">🎫 FreshService</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── M5: CLEARED + FIRST SESSION ── -->
+    <div class="milestone-block" id="m5">
+      <div class="rail-col">
+        <div class="milestone-dot dot-forest" onclick="scrollToMilestone('m5')"></div>
+        <div class="rail-line" style="background:transparent"></div>
+      </div>
+      <div class="milestone-content">
+        <div class="milestone-header" onclick="toggleMilestone('m5')">
+          <span class="m-num">M5</span>
+          <div>
+            <div class="m-label label-forest">Exit Gate · North Star</div>
+            <div class="m-title">Cleared for Assignment → First Session</div>
+            <div class="m-time">Median 14 days to first intake from official start date (IQR 7–30)</div>
+          </div>
+          <div class="m-toggle" id="toggle-m5">▾</div>
+        </div>
+
+        <div class="milestone-body" id="body-m5">
+          <div class="tabs" id="tabs-m5">
+            <button class="tab-btn active" onclick="switchTab('m5','experience')">Experience</button>
+            <button class="tab-btn" onclick="switchTab('m5','context')">Context</button>
+            <button class="tab-btn" onclick="switchTab('m5','systems')">Systems</button>
+          </div>
+
+          <div class="tab-panel active" id="m5-experience">
+            <div class="what-row">
+              <div class="what-card">
+                <div class="wc-label">What the clinician experiences</div>
+                <ul class="wc-items">
+                  <li>Marked cleared for assignment — officially ready to see patients</li>
+                  <li>First payer enrollment drives scheduling preference</li>
+                  <li>First intake appointment with a Cartwheel patient</li>
+                  <li>Begins building a caseload and establishing their schedule</li>
+                </ul>
+              </div>
+              <div class="what-card">
+                <div class="wc-label">What this moment means</div>
+                <ul class="wc-items">
+                  <li>The funnel problem is almost entirely pre-activation</li>
+                  <li>Once a clinician is seeing patients, retention becomes near-certain</li>
+                  <li>The battle is the credentialing window — not keeping people once they're in</li>
+                  <li>Every day of delay = a day Cartwheel cannot bill that clinician's sessions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="m5-context">
+            <div class="north-star">
+              <div class="ns-label">✓ The retention unlock</div>
+              <div class="ns-stat">
+                <span class="ns-number">94.7%</span>
+                <span class="ns-sub">of clinicians who reach full utilization<br>stay with Cartwheel</span>
+              </div>
+              <p>Once a clinician gets here, they almost never leave. The design challenge isn't retention — it's activation. Every project in the roadmap targets the window between signed offer and first billable session.</p>
+            </div>
+
+            <div class="exp-card">
+              <div class="exp-label">Supervised vs. independent — an 11-point gap</div>
+              <p>Supervised clinicians reach clearance at <strong style="color:var(--cw-light-mint)">72%</strong> through-funnel vs. <strong style="color:var(--cw-peach)">61%</strong> for independent clinicians. Most plausible mechanism: supervision provides a mandatory, paid, recurring touchpoint during the credentialing window. This is a discovery hypothesis — not a confirmed cause.</p>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="m5-systems">
+            <div class="system-row">
+              <span class="sys-tag">🟢 Healthie</span>
+              <span class="sys-tag">✅ Verifiable (payer enrollment)</span>
+              <span class="sys-tag">📅 Appointments Looker</span>
+              <span class="sys-tag">🧠 Clinician Care Details</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /journey -->
+
+  <!-- ── BOTTOM SUMMARY ── -->
+  <div class="summary">
+    <div class="summary-label">Reading this map</div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="sc-label" style="color:var(--cw-peach)">Where the experience breaks</div>
+        <p>The biggest drops — at credentialing survey and cleared for assignment — are both driven by invisible processes. No progress signals, no proactive reminders, no owned handoffs. Clinicians fall out not because they chose to leave, but because the process gives out on them.</p>
+      </div>
+      <div class="summary-card">
+        <div class="sc-label" style="color:var(--cw-lavender)">What the data doesn't show</div>
+        <p>The emotional weight of a delayed start date. The friction of self-navigating state compliance on a generic Google Site. The confusion when the recruiter's description of the role doesn't match what they find when they arrive.</p>
+      </div>
+      <div class="summary-card">
+        <div class="sc-label" style="color:var(--cw-mint)">The implication</div>
+        <p>At 94.7% retention for fully utilized clinicians, the problem has never been keeping people. It's getting them there. The credentialing window is where Cartwheel loses 72 out of every 100 clinicians it successfully recruits.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<script>
+  // ── STATE ──
+  let activeFilter = 'all';
+  const milestones = ['m1', 'm2', 'm3', 'm4', 'm5'];
+  const tabState = { m1: 'experience', m2: 'experience', m3: 'experience', m4: 'experience', m5: 'experience' };
+
+  // ── PROGRESS BAR ──
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+    const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+    updateActiveNav();
+  });
+
+  // ── ACTIVE NAV ──
+  function updateActiveNav() {
+    const scrollY = window.scrollY + 100;
+    let current = 'm1';
+    milestones.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) current = id;
+    });
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.target === current);
+    });
+  }
+
+  // ── TOGGLE MILESTONE ──
+  function toggleMilestone(id) {
+    const body = document.getElementById('body-' + id);
+    const toggle = document.getElementById('toggle-' + id);
+    const isCollapsed = body.classList.contains('collapsed');
+    body.classList.toggle('collapsed', !isCollapsed);
+    toggle.classList.toggle('collapsed', !isCollapsed);
+  }
+
+  // ── SCROLL TO ──
+  function scrollToMilestone(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── SWITCH TAB ──
+  function switchTab(milestoneId, tabId) {
+    // Deactivate all tab buttons for this milestone
+    document.querySelectorAll(`#tabs-${milestoneId} .tab-btn`).forEach((btn, i) => {
+      const panels = ['experience', 'pain', 'systems', 'context'];
+      const btnTab = panels[i] || '';
+      btn.classList.toggle('active', panels[i] === tabId);
+    });
+
+    // Also match by text
+    document.querySelectorAll(`#tabs-${milestoneId} .tab-btn`).forEach(btn => {
+      const map = { 'Experience': 'experience', 'Pain Points': 'pain', 'Systems': 'systems', 'Context': 'context' };
+      btn.classList.toggle('active', map[btn.textContent.trim()] === tabId);
+    });
+
+    // Deactivate all panels for this milestone
+    document.querySelectorAll(`[id^="${milestoneId}-"]`).forEach(panel => {
+      if (panel.classList.contains('tab-panel')) {
+        panel.classList.remove('active');
+      }
+    });
+
+    // Activate target panel
+    const target = document.getElementById(`${milestoneId}-${tabId}`);
+    if (target) target.classList.add('active');
+
+    tabState[milestoneId] = tabId;
+
+    // Re-apply filter if switching to pain tab
+    if (tabId === 'pain') applyFilter(activeFilter);
+  }
+
+  // ── FILTER ──
+  function setFilter(type) {
+    activeFilter = type;
+    document.getElementById('filterAll').classList.toggle('active', type === 'all');
+    document.getElementById('filterCritical').classList.toggle('active', type === 'critical');
+    document.getElementById('filterWarning').classList.toggle('active', type === 'warning');
+    applyFilter(type);
+  }
+
+  function applyFilter(type) {
+    milestones.forEach(mid => {
+      const painItems = document.querySelectorAll(`#${mid}-pain .pain-item`);
+      let visibleCount = 0;
+
+      painItems.forEach(item => {
+        const sev = item.dataset.severity;
+        let show = true;
+        if (type === 'critical') show = sev === 'critical';
+        if (type === 'warning') show = sev === 'warning';
+        item.classList.toggle('hidden-filter', !show);
+        if (show) visibleCount++;
+      });
+
+      // Zero state message
+      const noMsg = document.getElementById(`nopain-${mid}-pain`);
+      if (noMsg) noMsg.classList.toggle('visible', visibleCount === 0 && painItems.length > 0);
+    });
+  }
+
+  // ── CHART INTERACTIVITY ──
+  const points = document.querySelectorAll('.chart-point');
+  const tooltip = document.getElementById('chartTooltip');
+  const chartWrap = document.getElementById('chartWrap');
+
+  points.forEach(pt => {
+    pt.addEventListener('mouseenter', (e) => {
+      const label = pt.getAttribute('data-label');
+      const sent = pt.getAttribute('data-sent');
+      tooltip.innerHTML = `<strong>${label}</strong><br><span style="color:#9C9283;font-size:10px">${sent}</span>`;
+      tooltip.classList.add('visible');
+
+      // Position tooltip relative to chart wrap
+      const wrapRect = chartWrap.getBoundingClientRect();
+      const ptRect = pt.getBoundingClientRect();
+      const leftPct = (ptRect.left + ptRect.width / 2 - wrapRect.left);
+      tooltip.style.left = leftPct + 'px';
+      tooltip.style.top = (ptRect.top - wrapRect.top - 70) + 'px';
+    });
+
+    pt.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible');
+    });
+
+    pt.addEventListener('click', () => {
+      const target = pt.getAttribute('data-m');
+      scrollToMilestone(target);
+    });
+  });
+
+  // ── INIT ──
+  updateActiveNav();
+</script>
+
+</body>
+</html>
