@@ -8,16 +8,16 @@
 <style>
   /* ── CARTWHEEL BRAND TOKENS ── */
   :root {
-    --cw-bg:           #0F1B1F;
-    --cw-surface:      #172228;
-    --cw-surface-2:    #1C2F35;
-    --cw-surface-3:    #223540;
-    --cw-text:         #FFFFFF;
-    --cw-text-muted:   #9C9283;
-    --cw-text-dim:     #6B7A7E;
-    --cw-heading:      #B1A5F7;
-    --cw-border:       #243038;
-    --cw-border-light: #2E3E47;
+    --cw-bg:           #FFFFFF;
+    --cw-surface:      #F8F5F2;
+    --cw-surface-2:    #F0ECE9;
+    --cw-surface-3:    #E6E0DA;
+    --cw-text:         #1C2B30;
+    --cw-text-muted:   #4E4239;
+    --cw-text-dim:     #8C7E74;
+    --cw-heading:      #394B99;
+    --cw-border:       #DDD6CF;
+    --cw-border-light: #C4BBB3;
     --cw-indigo:       #394B99;
     --cw-lavender:     #B1A5F7;
     --cw-light-lav:    #D8D2FB;
@@ -55,7 +55,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(15, 27, 31, 0.95);
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--cw-border);
     padding: 0 48px;
@@ -144,8 +144,8 @@
   }
   .filter-btn:hover { border-color: var(--cw-border-light); color: var(--cw-text); }
   .filter-btn.active { background: var(--cw-surface-2); border-color: var(--cw-border-light); color: var(--cw-text); }
-  .filter-btn.f-critical.active { border-color: var(--cw-brick); color: var(--cw-peach); background: rgba(92,30,55,0.15); }
-  .filter-btn.f-warning.active { border-color: #5C4A1E; color: #F0C87E; background: rgba(92,74,30,0.15); }
+  .filter-btn.f-critical.active { border-color: var(--cw-brick); color: #5C1E37; background: rgba(92,30,55,0.10); }
+  .filter-btn.f-warning.active { border-color: #B8860B; color: #7A5200; background: rgba(120,80,0,0.10); }
 
   /* ── MAIN CONTENT ── */
   .main-content { padding: 52px 48px; max-width: 960px; }
@@ -231,8 +231,9 @@
 
   .chart-tooltip {
     position: absolute;
-    background: var(--cw-surface);
+    background: #FFFFFF;
     border: 1px solid var(--cw-border-light);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     border-radius: var(--cw-radius-md);
     padding: 8px 12px;
     font-size: 11px;
@@ -425,7 +426,7 @@
 
   .wc-items li {
     font-size: 12px;
-    color: #C8D0D8;
+    color: #3A3028;
     padding-left: 14px;
     position: relative;
     line-height: 1.5;
@@ -452,8 +453,8 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    background: #1A1018;
-    border: 1px solid #3A1828;
+    background: #FDE8E2;
+    border: 1px solid #F2C4B8;
     border-left: 3px solid var(--cw-brick);
     border-radius: var(--cw-radius-md);
     padding: 12px 14px;
@@ -461,34 +462,34 @@
   }
 
   .pain-item:hover {
-    background: #1F1220;
-    border-left-color: var(--cw-peach);
+    background: #FAD8CE;
+    border-left-color: #3D1226;
   }
 
   .pain-item.severity-warning {
-    background: #1A160E;
-    border-color: #3A2E18;
-    border-left-color: #8C6D2A;
+    background: #FDF4E0;
+    border-color: #EDD898;
+    border-left-color: #B8860B;
   }
 
-  .pain-item.severity-warning:hover { border-left-color: #F0C87E; }
+  .pain-item.severity-warning:hover { border-left-color: #7A5200; }
 
   .pain-item.hidden-filter { display: none; }
 
   .pain-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
 
-  .pain-text { font-size: 12px; color: var(--cw-peach); line-height: 1.65; }
+  .pain-text { font-size: 12px; color: #5C1E37; line-height: 1.65; }
 
-  .pain-text.warning-text { color: #E8C07A; }
+  .pain-text.warning-text { color: #7A5200; }
 
   .pain-text strong {
-    color: var(--cw-light-peach);
+    color: #3D1226;
     display: block;
     margin-bottom: 3px;
     font-size: 12px;
   }
 
-  .pain-text.warning-text strong { color: #F5DBA0; }
+  .pain-text.warning-text strong { color: #5A3A00; }
 
   /* ── SEVERITY BADGE ── */
   .severity-badge {
@@ -505,8 +506,8 @@
     width: fit-content;
   }
 
-  .badge-critical { background: rgba(92,30,55,0.3); color: var(--cw-peach); border: 1px solid rgba(92,30,55,0.5); }
-  .badge-warning { background: rgba(92,74,30,0.3); color: #F0C87E; border: 1px solid rgba(92,74,30,0.5); }
+  .badge-critical { background: rgba(92,30,55,0.12); color: #5C1E37; border: 1px solid rgba(92,30,55,0.3); }
+  .badge-warning { background: rgba(120,80,0,0.12); color: #7A5200; border: 1px solid rgba(120,80,0,0.3); }
 
   /* ── SYSTEM TAGS ── */
   .system-row {
@@ -521,18 +522,18 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background: var(--cw-surface);
-    border: 1px solid var(--cw-border);
+    background: #EBF6FC;
+    border: 1px solid #B3D9F0;
     border-radius: var(--cw-radius-pill);
     padding: 4px 11px;
     font-size: 11px;
-    color: var(--cw-taupe);
+    color: #1A6B9A;
     font-weight: 600;
     cursor: default;
     transition: all 0.15s;
   }
 
-  .sys-tag:hover { border-color: var(--cw-border-light); color: var(--cw-text-muted); }
+  .sys-tag:hover { background: #D6EEF9; border-color: #8EC8E8; color: #135680; }
 
   /* ── EXPERIENCE CARD ── */
   .exp-card {
@@ -551,13 +552,13 @@
     color: var(--cw-text-dim);
     margin-bottom: 8px;
   }
-  .exp-card p { font-size: 13px; color: #C8D0D8; line-height: 1.7; }
+  .exp-card p { font-size: 13px; color: #3A3028; line-height: 1.7; }
 
   /* ── NORTH STAR CARD ── */
   .north-star {
-    background: #0D1E1C;
-    border: 1px solid #1A3830;
-    border-left: 3px solid var(--cw-mint);
+    background: #EFF7ED;
+    border: 1px solid #C4DEBB;
+    border-left: 3px solid var(--cw-forest);
     border-radius: var(--cw-radius-md);
     padding: 18px 20px;
     margin-left: 40px;
@@ -568,7 +569,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--cw-mint);
+    color: var(--cw-forest);
     margin-bottom: 10px;
   }
   .north-star .ns-stat {
@@ -581,15 +582,15 @@
     font-family: var(--cw-font-display);
     font-size: 36px;
     font-weight: 700;
-    color: var(--cw-mint);
+    color: var(--cw-forest);
     line-height: 1;
   }
   .north-star .ns-sub {
     font-size: 13px;
-    color: var(--cw-light-mint);
+    color: #2A6055;
     line-height: 1.4;
   }
-  .north-star p { font-size: 12px; color: var(--cw-text-muted); line-height: 1.65; }
+  .north-star p { font-size: 12px; color: #3A5048; line-height: 1.65; }
 
   /* ── MILESTONE DOT COLORS ── */
   .dot-indigo  { background: var(--cw-indigo); }
@@ -653,6 +654,7 @@
     margin-bottom: 8px;
   }
   .summary-card p { font-size: 12px; color: var(--cw-text-muted); line-height: 1.7; }
+  .summary-card { background: var(--cw-surface-2); }
 
   /* ── PAIN COUNTER ── */
   .pain-counter {
@@ -667,8 +669,8 @@
     margin-left: 8px;
     vertical-align: middle;
   }
-  .counter-critical { background: rgba(92,30,55,0.25); color: var(--cw-peach); }
-  .counter-warning { background: rgba(92,74,30,0.25); color: #F0C87E; }
+  .counter-critical { background: rgba(92,30,55,0.12); color: #5C1E37; }
+  .counter-warning { background: rgba(120,80,0,0.12); color: #7A5200; }
 
   /* ── FADE IN ── */
   @keyframes fadeUp {
@@ -806,10 +808,10 @@
     <div class="chart-wrap" id="chartWrap">
       <svg id="sentimentChart" viewBox="0 0 800 160" preserveAspectRatio="xMidYMid meet">
         <!-- Grid lines -->
-        <line x1="80" y1="20" x2="780" y2="20" stroke="#243038" stroke-width="1"/>
-        <line x1="80" y1="60" x2="780" y2="60" stroke="#243038" stroke-width="1"/>
-        <line x1="80" y1="100" x2="780" y2="100" stroke="#243038" stroke-width="1"/>
-        <line x1="80" y1="140" x2="780" y2="140" stroke="#243038" stroke-width="1"/>
+        <line x1="80" y1="20" x2="780" y2="20" stroke="#DDD6CF" stroke-width="1"/>
+        <line x1="80" y1="60" x2="780" y2="60" stroke="#DDD6CF" stroke-width="1"/>
+        <line x1="80" y1="100" x2="780" y2="100" stroke="#DDD6CF" stroke-width="1"/>
+        <line x1="80" y1="140" x2="780" y2="140" stroke="#DDD6CF" stroke-width="1"/>
 
         <!-- Y-axis labels -->
         <text x="72" y="24" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#6B7A7E">High</text>
@@ -817,11 +819,11 @@
         <text x="72" y="144" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="#6B7A7E">Low</text>
 
         <!-- Milestone vertical guides -->
-        <line x1="150" y1="20" x2="150" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
-        <line x1="320" y1="20" x2="320" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
-        <line x1="450" y1="20" x2="450" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
-        <line x1="600" y1="20" x2="600" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
-        <line x1="730" y1="20" x2="730" y2="140" stroke="#243038" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="150" y1="20" x2="150" y2="140" stroke="#DDD6CF" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="320" y1="20" x2="320" y2="140" stroke="#DDD6CF" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="450" y1="20" x2="450" y2="140" stroke="#DDD6CF" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="600" y1="20" x2="600" y2="140" stroke="#DDD6CF" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="730" y1="20" x2="730" y2="140" stroke="#DDD6CF" stroke-width="1" stroke-dasharray="3,4"/>
 
         <!-- Milestone labels -->
         <text x="150" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#6B7A7E" font-weight="600">M1</text>
@@ -1362,7 +1364,7 @@
 
             <div class="exp-card">
               <div class="exp-label">Supervised vs. independent — an 11-point gap</div>
-              <p>Supervised clinicians reach clearance at <strong style="color:var(--cw-light-mint)">72%</strong> through-funnel vs. <strong style="color:var(--cw-peach)">61%</strong> for independent clinicians. Most plausible mechanism: supervision provides a mandatory, paid, recurring touchpoint during the credentialing window. This is a discovery hypothesis — not a confirmed cause.</p>
+              <p>Supervised clinicians reach clearance at <strong style="color:var(--cw-forest)">72%</strong> through-funnel vs. <strong style="color:#B85C4A">61%</strong> for independent clinicians. Most plausible mechanism: supervision provides a mandatory, paid, recurring touchpoint during the credentialing window. This is a discovery hypothesis — not a confirmed cause.</p>
             </div>
           </div>
 
