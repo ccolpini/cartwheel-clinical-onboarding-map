@@ -354,8 +354,8 @@
   /* ── COLLAPSIBLE BODY ── */
   .milestone-body {
     overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
-    max-height: 2000px;
+    transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    max-height: 5000px;
     opacity: 1;
   }
   .milestone-body.collapsed {
@@ -685,6 +685,36 @@
   .milestone-block:nth-child(4) { animation-delay: 0.26s; }
   .milestone-block:nth-child(5) { animation-delay: 0.33s; }
 
+  /* ── PAIN SECTION LABEL (Google Sites divider) ── */
+  .pain-section-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 0 6px;
+    margin-top: 6px;
+    border-top: 1px solid var(--cw-border);
+  }
+  .psl-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cw-text-dim);
+    background: var(--cw-surface-2);
+    border: 1px solid var(--cw-border);
+    border-radius: var(--cw-radius-pill);
+    padding: 3px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .psl-note {
+    font-size: 11px;
+    color: var(--cw-text-dim);
+    font-style: italic;
+    line-height: 1.5;
+    padding-top: 2px;
+  }
+
   /* ── ZERO STATE ── */
   .no-pain-msg {
     display: none;
@@ -941,8 +971,8 @@
           <div>
             <div class="m-label label-lav">Pre-Onboarding Window</div>
             <div class="m-title">Credentialing Survey → Background Check
-              <span class="pain-counter counter-critical" title="Critical pain points">🔴 2</span>
-              <span class="pain-counter counter-warning" title="Warning pain points">⚠️ 1</span>
+              <span class="pain-counter counter-critical" title="Critical pain points">🔴 9</span>
+              <span class="pain-counter counter-warning" title="Warning pain points">⚠️ 2</span>
             </div>
             <div class="m-time">~5 days to survey · then 2–4 weeks before start date</div>
           </div>
@@ -971,10 +1001,10 @@
               <div class="what-card">
                 <div class="wc-label">What Cartwheel does</div>
                 <ul class="wc-items">
-                  <li>State compliance requirements listed on a generic Google Site</li>
-                  <li>No system reminders for incomplete items</li>
-                  <li>Internal teams follow up manually if survey not received</li>
-                  <li>Background check (Checkr) runs in parallel — not yet in analysis</li>
+                  <li>Sends a welcome email pointing clinicians to a Google Site for all onboarding requirements</li>
+                  <li>Google Site is a reference doc — used as an action checklist, designed as neither</li>
+                  <li>No system reminders for incomplete items — follow-up is manual</li>
+                  <li>Background check (Checkr) runs in parallel with a 7-day action window</li>
                   <li>Blocker diagnosis happens after the deadline, not before</li>
                 </ul>
               </div>
@@ -1007,6 +1037,84 @@
                   <div class="severity-badge badge-warning">⚠️ Warning</div>
                 </div>
               </div>
+
+              <!-- ── GOOGLE SITES SECTION ── -->
+              <div class="pain-section-label">
+                <span class="psl-tag">🌐 Clinician Onboarding Site</span>
+                <span class="psl-note">The Google Site sent in the welcome email — used as an action checklist, built as a reference doc. It fails at both.</span>
+              </div>
+
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>One page doing two jobs — pre-hire and post-hire requirements mixed together</strong>
+                  Items due before the start date share the same page as items that don't apply for 90 days. There is no structural separation. A clinician working through credentials has no way to distinguish what's urgent now from what can wait — so they either do everything at once or miss time-sensitive items entirely.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>No role-based view — psychiatrists and therapists navigate the same page</strong>
+                  Requirements differ significantly by role, but every clinician sees identical content. A therapist must mentally filter out psychiatry-specific items — and vice versa — with no guidance on what applies to them. This makes an already-dense page feel impossibly long, and increases the chance of missed role-specific requirements.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>The credentialing deadline is internally contradictory</strong>
+                  The site states "complete within 72 hours of signing your offer" in one place and "at least one month before your start date" in another. These deadlines are not the same. A clinician following one instruction may be violating the other — and there is no indication the two are in conflict.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>Checkr's 7-day urgency is buried inside a "2 weeks before start date" header</strong>
+                  The background check requires action within 7 days of the invitation — but it lives under a section headed "2 weeks before start date." A clinician who reads the header and acts accordingly misses the real deadline by a week. One missed Checkr window can push a start date.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>Collapsible sections hide requirements — and look empty by default</strong>
+                  Key compliance items live inside collapsed accordions. A clinician skimming the page — a reasonable behavior on a long document — will not see content that isn't expanded. There is no signal that a collapsed section contains something they're required to complete. Entire requirement categories can be missed without any system feedback.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+
+              <div class="pain-item severity-warning" data-severity="warning">
+                <span class="pain-icon">⚠️</span>
+                <div class="pain-text warning-text">
+                  <strong>The FAQ is disconnected from the content that generates questions</strong>
+                  Questions naturally arise at the point of action — but the FAQ lives in a separate section. To get an answer, a clinician must leave their current task, navigate to the FAQ, find the relevant entry, then navigate back. No inline clarifications exist at the point of need. Mid-task interruptions increase dropout risk.
+                  <div class="severity-badge badge-warning">⚠️ Warning</div>
+                </div>
+              </div>
+
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>I-9 appears twice, in two separate locations, with different framing</strong>
+                  The I-9 requirement is listed in two places on the site. Clinicians don't know if this represents one task or two. Some complete it twice assuming both instances are required; others assume the second appearance is a duplicate and skip it. Either outcome creates compliance risk — and there is nothing on the page to resolve the ambiguity.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
+
+              <div class="pain-item severity-critical" data-severity="critical">
+                <span class="pain-icon">🔴</span>
+                <div class="pain-text">
+                  <strong>State requirements carry no timing guidance in their headings</strong>
+                  NY fingerprinting, AZ CALOCUS, MA CANS — each has a different compliance window (90-day, 20-day, day-1 start). That timing is buried in body text inside collapsed sections, never surfaced in the heading. A clinician navigating at speed cannot determine which items are urgent and which are deferrable without reading every line of every expanded section.
+                  <div class="severity-badge badge-critical">🔴 Critical</div>
+                </div>
+              </div>
             </div>
             <div class="no-pain-msg" id="nopain-m2-pain">No pain points match the current filter.</div>
           </div>
@@ -1016,7 +1124,7 @@
               <span class="sys-tag">📋 Cognito Forms</span>
               <span class="sys-tag">✅ Verifiable</span>
               <span class="sys-tag">🔍 Checkr</span>
-              <span class="sys-tag">🌐 Generic Google Site</span>
+              <span class="sys-tag">🌐 Clinician Onboarding Site</span>
             </div>
           </div>
         </div>
@@ -1282,7 +1390,7 @@
       </div>
       <div class="summary-card">
         <div class="sc-label" style="color:var(--cw-lavender)">What the data doesn't show</div>
-        <p>The emotional weight of a delayed start date. The friction of self-navigating state compliance on a generic Google Site. The confusion when the recruiter's description of the role doesn't match what they find when they arrive.</p>
+        <p>The emotional weight of a delayed start date. The confusion of a contradictory deadline, a buried Checkr window, and state requirements with no timing signals — all on a site designed for reference, used as an action checklist. The moment a clinician realizes their recruiter's description of the role doesn't match what they find when they arrive.</p>
       </div>
       <div class="summary-card">
         <div class="sc-label" style="color:var(--cw-mint)">The implication</div>
